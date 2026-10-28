@@ -1,0 +1,112 @@
+import React from "react";
+import Image from "next/image";
+import { DAILY_QUESTS, PREMIUM_DAILY_ROTATION, RequestItem } from "@/data/battlePassQuestData";
+
+interface DailyQuestSectionProps {
+  isPremiumOpened: boolean;
+  formatRequest: (request: RequestItem[] | undefined) => string;
+}
+
+export default function DailyQuestSection({
+  isPremiumOpened,
+  formatRequest,
+}: DailyQuestSectionProps) {
+  return (
+    <div className="card border border-base-300 bg-base-100 text-base-content shadow-md">
+      <div className="card-body p-4 sm:p-6 lg:p-7">
+        <h2 className="card-title mb-6 flex items-center gap-2 text-xl font-black tracking-tight text-base-content sm:text-2xl">
+          <span className="text-2xl">📅</span> Daily Quest
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div className="relative overflow-hidden rounded-2xl border-2 border-primary/20 bg-base-100 p-4 text-base-content shadow-md">
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 border-primary/20 bg-primary/10">
+                <Image
+                  src="/assets/images/Events/monsterx3.png"
+                  alt="Monster Hunt"
+                  fill
+                  sizes="80px"
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <div className="mb-2 text-xs font-semibold text-base-content/70">Monster Hunt</div>
+                <div className="text-2xl font-bold text-primary sm:text-3xl">
+                  {isPremiumOpened ? PREMIUM_DAILY_ROTATION[0].reward : DAILY_QUESTS[0].reward}
+                </div>
+                <div className="text-xs text-base-content/60">Point</div>
+              </div>
+            </div>
+            <div className="text-xs space-y-2 bg-primary/10 rounded p-3">
+              {isPremiumOpened ? (
+                <>
+                  {PREMIUM_DAILY_ROTATION.map((quest) => (
+                    <div key={quest.dateRange} className="flex justify-between">
+                      <span>{formatRequest(quest.request)}</span>
+                      <span className="text-primary font-bold">{quest.dateRange}</span>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className="flex justify-between">
+                  <span>{formatRequest(DAILY_QUESTS[0].request)}</span>
+                  <span className="text-primary font-bold">{DAILY_QUESTS[0].dateRange}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl border-2 border-primary/20 bg-base-100 p-4 text-base-content shadow-md">
+            <div className="mb-3 flex items-start justify-between gap-3">
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 border-primary/20 bg-primary/10">
+                <Image
+                  src="/assets/images/horrortoyfactory/treasure.gif"
+                  alt="Send Zeny"
+                  fill
+                  sizes="80px"
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <div className="mb-2 text-xs font-semibold text-base-content/70">{DAILY_QUESTS[1].name}</div>
+                <div className="text-2xl font-bold text-primary sm:text-3xl">{DAILY_QUESTS[1].reward}</div>
+                <div className="text-xs text-base-content/60">Point</div>
+              </div>
+            </div>
+            <div className="rounded bg-primary/10 p-3 text-xs text-base-content/70">
+              <div>{formatRequest(DAILY_QUESTS[1].request)}</div>
+              <div className="mt-2 font-semibold text-primary">{DAILY_QUESTS[1].dateRange}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-linear-to-r from-primary/15 to-primary/5 rounded-xl p-4 border border-primary/20">
+          <div className="text-center">
+            <div className="text-xs text-primary font-semibold mb-2">รวม Daily ต่อวัน</div>
+            <div className="flex justify-center gap-4 items-center">
+              <div>
+                <div className="text-sm text-base-content/80 font-medium mb-1">
+                  สังหาร: {isPremiumOpened ? PREMIUM_DAILY_ROTATION[0].reward : DAILY_QUESTS[0].reward} Point
+                </div>
+              </div>
+              <div className="text-base-content/60">+</div>
+              <div>
+                <div className="text-sm text-base-content/80 font-medium mb-1">ส่งเงิน: {DAILY_QUESTS[1].reward} Point</div>
+              </div>
+              <div className="text-lg font-bold text-primary">=</div>
+              <div>
+                <div className="text-3xl font-bold text-primary">
+                  {isPremiumOpened
+                    ? PREMIUM_DAILY_ROTATION[0].reward + DAILY_QUESTS[1].reward
+                    : DAILY_QUESTS[0].reward + DAILY_QUESTS[1].reward}
+                </div>
+                <div className="text-xs text-base-content/70">Point</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
